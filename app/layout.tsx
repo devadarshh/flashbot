@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "OneMinute Support - Human-friendly AI",
+  title: "Flash Support ",
   description:
     "Instantly resolve customer questions with an assistant that reads your docs and speaks with empathy.",
 };
