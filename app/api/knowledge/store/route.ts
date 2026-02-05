@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
 
       const res = await fetch(zenUrl.toString(), {
         headers: {
-          "User-Agent": "OneMinuteSupportBot/1.0",
+          "User-Agent": "FlashSupportBot/1.0",
         },
       });
 

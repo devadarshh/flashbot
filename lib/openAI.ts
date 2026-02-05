@@ -22,7 +22,7 @@ export const openai = new OpenAI({
 export async function summarizeMarkdown(markdown: string) {
   try {
     const completion = await openai.chat.completions.create({
-      model: "gemini-3-flash",
+      model: "gemini-2.5-flash",
       temperature: 0.1,
       max_tokens: 900,
       messages: [
