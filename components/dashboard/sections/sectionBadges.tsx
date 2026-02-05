@@ -5,7 +5,7 @@ export function getStatusBadge(status: SectionStatus) {
     case "active":
       return (
         <Badge
-          variant="outline"
+          variant="success"
           className="bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20 border-emerald-500/20"
         >
           Active
