@@ -53,7 +53,7 @@ MUST be under 2000 words.`,
 export async function summarizeConversation(messages: any[]) {
   try {
     const completion = await openai.chat.completions.create({
-      model: "gemini-3-flash",
+      model: "gemini-2.5-flash",
       temperature: 0.3,
       max_tokens: 500,
       messages: [
