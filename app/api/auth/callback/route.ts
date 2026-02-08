@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
     if (!organizationId) {
       return NextResponse.json(
         { error: "No organization id found in token claims" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -49,7 +49,11 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    const response = NextResponse.redirect(new URL("/", req.url));
+    const host = req.headers.get("host") ?? "localhost:3000";
+    const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+    const response = NextResponse.redirect(
+      new URL("/", `${protocol}://${host}`),
+    );
     const userSession = {
       email: user.email,
       organization_id: organizationId,
@@ -68,7 +72,7 @@ export async function GET(req: NextRequest) {
     console.error("Error exchanging code:", error);
     return NextResponse.json(
       { error: "Failed to authenticate user" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
