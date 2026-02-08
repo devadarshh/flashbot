@@ -11,7 +11,11 @@
       return;
     }
 
-    fetch("https://flashsupport.nitishyadav.xyz/api/widget/session", {
+    var baseUrl =
+      script.getAttribute("data-base-url") ||
+      "https://flashsupport.nitishyadav.xyz";
+
+    fetch(baseUrl + "/api/widget/session", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -31,8 +35,7 @@
         }
 
         var iframe = document.createElement("iframe");
-        iframe.src =
-          "https://flashsupport.nitishyadav.xyz/embed?token=" + encodeURIComponent(data.token);
+        iframe.src = baseUrl + "/embed?token=" + encodeURIComponent(data.token);
 
         iframe.setAttribute("title", "Support Chat");
         iframe.style.position = "fixed";

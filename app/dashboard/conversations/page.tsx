@@ -321,7 +321,7 @@ const ConversationPage = () => {
                   {isSending ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
                   ) : (
-                    <Send className="w-4 h-4" />
+                    <Send className="w-4 h-4 mt-2" />
                   )}
                 </Button>
               </div>

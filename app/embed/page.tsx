@@ -364,7 +364,7 @@ const EmbedPage = () => {
                 : {}
             }
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-4 h-4 mt-2" />
           </Button>
         </div>
         <div className="mt-2 text-center">
