@@ -93,8 +93,8 @@ const TeamSection = () => {
         </div>
         <Dialog open={openDiaog} onOpenChange={setOpenDialog}>
           <DialogTrigger asChild>
-            <Button size="sm" className="bg-white text-black hover:bg-zinc-200">
-              <Plus className="w-4 h-4 mr-2" />
+            <Button size="sm" className="bg-white pt-[6px] text-black hover:bg-zinc-200">
+              <Plus className="w-4 h-4 mr-1 mt-0.5" />
               Add Member
             </Button>
           </DialogTrigger>

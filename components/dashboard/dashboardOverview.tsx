@@ -187,11 +187,11 @@ const DashboardOverView = () => {
               </div>
               <Button
                 size="sm"
-                className="h-8 gap-1 bg-white text-black hover:bg-zinc-200"
+                className="h-8 pt-2 gap-1 bg-white text-black hover:bg-zinc-200"
                 asChild
               >
                 <Link href="/dashboard/sections">
-                  <Plus className="w-3 h-3" />
+                  <Plus className="w-3 h-3 mt-0.5" />
                   Create Section
                 </Link>
               </Button>
