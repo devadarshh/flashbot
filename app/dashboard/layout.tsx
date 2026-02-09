@@ -2,7 +2,7 @@ import Sidebar from "@/components/dashboard/sidebar";
 import { cookies } from "next/headers";
 
 export const metadata = {
-  title: "OneMinute Support - Dashboard",
+  title: "Flash Support - Dashboard",
   description:
     "Instantly resolve customer questions with an assistant that reads your docs and speaks with empathy.",
 };
