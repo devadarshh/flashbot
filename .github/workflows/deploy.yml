@@ -68,9 +68,18 @@ jobs:
             # Pull the latest image
             docker pull ghcr.io/${{ github.repository }}:latest
 
-            # Stop and remove existing container (if any)
+            # Aggressively clean up any containers using port 3000
+            docker ps -a --filter "expose=3000" -q | xargs -r docker rm -f
+            
+            # Stop and remove containers by name as fallback
             docker stop web || true
-            docker rm web || true
+            docker rm -f web || true
+            
+            # Final cleanup: kill any remaining processes on port 3000
+            sudo fuser -k 3000/tcp || true
+            
+            # Wait a moment for port to be released
+            sleep 2
 
             # Run new container
             # Note: We use the same run command as in docker-compose, but simplified for single container
