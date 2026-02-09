@@ -10,7 +10,7 @@ const Footer = () => {
           <Link href={"/"} className="flex items-center gap-2">
             <Logo />
             <span className="text-base font-semibold tracking-tight text-white/90">
-              Flash Support
+              FlashBot
             </span>
           </Link>
         </div>

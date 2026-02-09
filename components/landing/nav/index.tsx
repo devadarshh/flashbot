@@ -12,7 +12,7 @@ const Navbar = async () => {
         <Link href={"/"} className="flex items-center gap-2">
           <Logo />
           <span className="text-base font-semibold tracking-tight text-white/90">
-            Flash Support
+            FlashBot
           </span>
         </Link>
 
@@ -36,7 +36,7 @@ const Navbar = async () => {
             <div className="flex items-center gap-3">
               <Link
                 href="/dashboard"
-                className="h-10 px-4 rounded-xl bg-white text-black text-sm font-medium hover:bg-zinc-200 transition-all flex items-center gap-2"
+                className="h-10 px-4 rounded-full bg-white text-black text-sm font-medium hover:bg-zinc-200 transition-all flex items-center gap-2"
               >
                 Dashboard
               </Link>

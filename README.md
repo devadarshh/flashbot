@@ -1,6 +1,6 @@
 <div align="center">
 
-  <h1>🚀 Flash Support</h1>
+  <h1>🚀 Flashbot</h1>
   <p>
     <strong>A lightning-fast, modern support widget and dashboard for your SaaS.</strong>
   </p>
@@ -55,8 +55,8 @@
 1.  **Clone the repository**:
 
     ```bash
-    git clone https://github.com/your-username/flashSupport.git
-    cd flashSupport
+    git clone https://github.com/your-username/flashbot.git
+    cd flashbot
     ```
 
 2.  **Install dependencies**:
@@ -77,7 +77,7 @@
     DATABASE_URL="postgres://user:password@host:port/database?sslmode=no-verify"
 
     # Scalekit (Auth)
-    SCALEKIT_ENVIRONMENT_URL="https://flashsupport.scalekit.dev"
+    SCALEKIT_ENVIRONMENT_URL="https://flashbot.scalekit.dev"
     SCALEKIT_CLIENT_ID="your-client-id"
     SCALEKIT_CLIENT_SECRET="your-client-secret"
     SCALEKIT_REDIRECT_URI="http://localhost:3000/api/auth/callback"
@@ -113,12 +113,12 @@ This project is optimized for deployment on AWS EC2 using Docker and GitHub Acti
 1.  **Build the image**:
 
     ```bash
-    docker build -t flashSupport .
+    docker build -t flashbot .
     ```
 
 2.  **Run the container**:
     ```bash
-    docker run -p 3000:3000 --env-file .env flashSupport
+    docker run -p 3000:3000 --env-file .env flashbot
     ```
 
 ### Automated Deployment (GitHub Actions)

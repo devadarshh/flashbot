@@ -55,7 +55,7 @@ const Integration = () => {
 
             <div className="font-mono text-xs md:text-sm leading-7 text-zinc-400">
               <div className="text-zinc-600">
-                &lt;!-- Flash Support --&gt;
+                &lt;!-- Flash Bot --&gt;
               </div>
               <div>
                 &lt;<span className="text-pink-400">script</span>
@@ -63,7 +63,7 @@ const Integration = () => {
               <div className="pl-4">
                 <span className="text-indigo-400">src</span>=
                 <span className="text-emerald-400">
-                  &quot;https://flash-support.nitishyadav.xyz&quot;
+                  &quot;https://flashbot.nitishyadav.xyz&quot;
                 </span>
               </div>
               <div className="pl-4">

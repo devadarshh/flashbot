@@ -44,7 +44,7 @@ const Hero = () => {
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-sm font-medium text-zinc-300">
-                  Flash Support Inc.
+                  FlashBot Inc.
                 </span>
               </div>
             </div>
@@ -87,7 +87,7 @@ const Hero = () => {
                       <User className="w-4 h-4 text-zinc-400" />
                     </div>
                     <div className="p-4 rounded-2xl text-sm leading-relaxed shadow-sm bg-zinc-800 text-zinc-200 rounded-tr-sm">
-                      I need some information about Flash Support
+                      I need some information about FlashBot
                     </div>
                   </div>
                 </div>
@@ -104,7 +104,7 @@ const Hero = () => {
                       />
                     </div>
                     <div className="p-4 rounded-2xl text-sm leading-relaxed shadow-sm bg-white text-zinc-900 rounded-tl-sm">
-                      Flash Support is an integrated ecosystem designed to
+                      FlashBot is an integrated ecosystem designed to
                       enhance developer efficiency. It includes tools like
                       Flash Logs for real-time monitoring and Flash Community for
                       community support.
