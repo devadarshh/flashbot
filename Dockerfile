@@ -18,6 +18,12 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Accept build args for optional environment variables
+ARG GEMINI_API_KEY=dummy_key_for_build
+ARG DATABASE_URL=dummy_db_url_for_build
+
+ENV GEMINI_API_KEY=${GEMINI_API_KEY}
+ENV DATABASE_URL=${DATABASE_URL}
 
 RUN npm run build
 

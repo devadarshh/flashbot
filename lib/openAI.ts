@@ -13,11 +13,29 @@ const customFetch = (url: RequestInfo | URL, init?: RequestInit) => {
   });
 };
 
-export const openai = new OpenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-  fetch: customFetch,
-  baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
-});
+let _openai: OpenAI | null = null;
+
+export const getOpenAI = () => {
+  if (!_openai) {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      throw new Error("Missing credentials. Please set the `GEMINI_API_KEY` environment variable.");
+    }
+    _openai = new OpenAI({
+      apiKey,
+      fetch: customFetch,
+      baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
+    });
+  }
+  return _openai;
+};
+
+// For backward compatibility, provide a getter
+export const openai = new Proxy({}, {
+  get(target, prop) {
+    return Reflect.get(getOpenAI(), prop);
+  },
+}) as OpenAI;
 
 export async function summarizeMarkdown(markdown: string) {
   try {
