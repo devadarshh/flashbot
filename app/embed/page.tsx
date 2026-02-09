@@ -372,7 +372,7 @@ const EmbedPage = () => {
             href={"/"}
             className="text-[10px] text-zinc-600 font-medium hover:text-zinc-500 transition-colors"
           >
-            Powered by Flash Support
+            Powered by FlashBot
           </Link>
         </div>
       </div>
