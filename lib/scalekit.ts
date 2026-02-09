@@ -1,9 +1,22 @@
 import { Scalekit } from "@scalekit-sdk/node";
 
-const scalekit = new Scalekit(
-  process.env.SCALEKIT_ENVIRONMENT_URL!,
-  process.env.SCALEKIT_CLIENT_ID!,
-  process.env.SCALEKIT_CLIENT_SECRET!
-);
+let _scalekit: Scalekit | null = null;
 
-export default scalekit;
+const getScalekit = () => {
+  if (!_scalekit) {
+    const environmentUrl = process.env.SCALEKIT_ENVIRONMENT_URL;
+    const clientId = process.env.SCALEKIT_CLIENT_ID;
+    const clientSecret = process.env.SCALEKIT_CLIENT_SECRET;
+
+    if (!environmentUrl || !clientId || !clientSecret) {
+      throw new Error(
+        "Missing Scalekit credentials. Please set SCALEKIT_ENVIRONMENT_URL, SCALEKIT_CLIENT_ID, and SCALEKIT_CLIENT_SECRET environment variables."
+      );
+    }
+
+    _scalekit = new Scalekit(environmentUrl, clientId, clientSecret);
+  }
+  return _scalekit;
+};
+
+export default getScalekit;

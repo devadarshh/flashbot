@@ -5,7 +5,7 @@ import { conversation, knowledge_source } from "@/db/schema";
 import { messages as messagesTable } from "@/db/schema";
 import { eq, inArray } from "drizzle-orm";
 import { countConversationTokens } from "@/lib/countConversationTokens";
-import { openai, summarizeConversation } from "@/lib/openAI";
+import { getOpenAI, summarizeConversation } from "@/lib/openAI";
 
 export async function POST(req: Request) {
   const authHeader = req.headers.get("Authorization");
@@ -136,6 +136,7 @@ Context:
 ${context}`;
 
   try {
+    const openai = getOpenAI();
     const completion = await openai.chat.completions.create({
       model: "gemini-2.5-flash",
       messages: [{ role: "system", content: systemPrompt }, ...messages],

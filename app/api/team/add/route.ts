@@ -1,7 +1,7 @@
 import { db } from "@/db/client";
 import { teamMembers } from "@/db/schema";
 import { isAuthorized } from "@/lib/isAuthorized";
-import scalekit from "@/lib/scalekit";
+import getScalekit from "@/lib/scalekit";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
@@ -30,6 +30,7 @@ export async function POST(req: Request) {
       );
     }
 
+    const scalekit = getScalekit();
     const { user } = await scalekit.user.createUserAndMembership(
       LoggedInUser.organization_id,
       {

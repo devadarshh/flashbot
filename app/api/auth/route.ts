@@ -1,4 +1,4 @@
-import scalekit from "@/lib/scalekit";
+import getScalekit from "@/lib/scalekit";
 import crypto from "crypto";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
@@ -19,6 +19,7 @@ export async function GET() {
       state,
     };
 
+    const scalekit = getScalekit();
     const authorizationUrl = scalekit.getAuthorizationUrl(redirectUri, options);
 
     return NextResponse.redirect(authorizationUrl);

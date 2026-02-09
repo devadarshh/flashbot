@@ -1,6 +1,6 @@
 import { db } from "@/db/client";
 import { teamMembers } from "@/db/schema";
-import scalekit from "@/lib/scalekit";
+import getScalekit from "@/lib/scalekit";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
@@ -11,6 +11,7 @@ export async function POST(req: Request) {
     const headers = Object.fromEntries(req.headers.entries());
 
     const secret = process.env.SCALEKIT_WEBHOOK_SECRET!;
+    const scalekit = getScalekit();
 
     try {
       scalekit.verifyWebhookPayload(secret, headers, body);

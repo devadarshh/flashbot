@@ -2,7 +2,7 @@ import { db } from "@/db/client";
 import { knowledge_source } from "@/db/schema";
 import { countConversationTokens } from "@/lib/countConversationTokens";
 import { isAuthorized } from "@/lib/isAuthorized";
-import { openai, summarizeConversation } from "@/lib/openAI";
+import { getOpenAI, summarizeConversation } from "@/lib/openAI";
 import { inArray } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
@@ -62,6 +62,7 @@ Context:
 ${context}`;
 
   try {
+    const openai = getOpenAI();
     const completion = await openai.chat.completions.create({
       model: "gemini-2.5-flash",
       messages: [{ role: "system", content: systemPrompt }, ...messages],

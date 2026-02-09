@@ -30,15 +30,9 @@ export const getOpenAI = () => {
   return _openai;
 };
 
-// For backward compatibility, provide a getter
-export const openai = new Proxy({}, {
-  get(target, prop) {
-    return Reflect.get(getOpenAI(), prop);
-  },
-}) as OpenAI;
-
 export async function summarizeMarkdown(markdown: string) {
   try {
+    const openai = getOpenAI();
     const completion = await openai.chat.completions.create({
       model: "gemini-2.5-flash",
       temperature: 0.1,
@@ -70,6 +64,7 @@ MUST be under 2000 words.`,
 
 export async function summarizeConversation(messages: any[]) {
   try {
+    const openai = getOpenAI();
     const completion = await openai.chat.completions.create({
       model: "gemini-2.5-flash",
       temperature: 0.3,

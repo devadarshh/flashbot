@@ -45,6 +45,10 @@ jobs:
           build-args: |
             DATABASE_URL=${{ secrets.DATABASE_URL || 'postgresql://dummy:dummy@localhost:5432/dummy' }}
             GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY || 'dummy_key_for_build' }}
+            SCALEKIT_ENVIRONMENT_URL=${{ secrets.SCALEKIT_ENVIRONMENT_URL || 'https://dummy.scalekit.com' }}
+            SCALEKIT_CLIENT_ID=${{ secrets.SCALEKIT_CLIENT_ID || 'dummy_client_id' }}
+            SCALEKIT_CLIENT_SECRET=${{ secrets.SCALEKIT_CLIENT_SECRET || 'dummy_client_secret' }}
+            NEXT_PUBLIC_WEBSITE_URI=${{ secrets.NEXT_PUBLIC_WEBSITE_URI || 'http://localhost:3000' }}
 
   deploy:
     needs: build
@@ -75,5 +79,13 @@ jobs:
               --name web \
               --restart always \
               -p 3000:3000 \
-              --env-file .env \
+              -e DATABASE_URL='${{ secrets.DATABASE_URL }}' \
+              -e GEMINI_API_KEY='${{ secrets.GEMINI_API_KEY }}' \
+              -e SCALEKIT_ENVIRONMENT_URL='${{ secrets.SCALEKIT_ENVIRONMENT_URL }}' \
+              -e SCALEKIT_CLIENT_ID='${{ secrets.SCALEKIT_CLIENT_ID }}' \
+              -e SCALEKIT_CLIENT_SECRET='${{ secrets.SCALEKIT_CLIENT_SECRET }}' \
+              -e SCALEKIT_REDIRECT_URI='${{ secrets.SCALEKIT_REDIRECT_URI }}' \
+              -e JWT_SECRET='${{ secrets.JWT_SECRET }}' \
+              -e NEXT_PUBLIC_WEBSITE_URI='${{ secrets.NEXT_PUBLIC_WEBSITE_URI }}' \
+              -e ZENROWS_API_KEY='${{ secrets.ZENROWS_API_KEY }}' \
               ghcr.io/${{ github.repository }}:latest

@@ -1,5 +1,5 @@
 import { db } from "@/db/client";
-import scalekit from "@/lib/scalekit";
+import getScalekit from "@/lib/scalekit";
 import { NextRequest, NextResponse } from "next/server";
 import { user as User } from "@/db/schema";
 import { eq } from "drizzle-orm";
@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const redirectUri = process.env.SCALEKIT_REDIRECT_URI!;
+    const scalekit = getScalekit();
 
     const authResult = await scalekit.authenticateWithCode(code, redirectUri);
     const { user, idToken } = authResult;
