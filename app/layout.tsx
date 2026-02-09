@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Flash Support ",
+  title: "FlashBot ",
   description:
     "Instantly resolve customer questions with an assistant that reads your docs and speaks with empathy.",
 };
