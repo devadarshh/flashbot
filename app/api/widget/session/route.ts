@@ -7,7 +7,7 @@ import { SignJWT } from "jose";
 const ALLOWED_ORIGINS = [
   "http://localhost:3000",
   "http://localhost:3001",
-  "https://flashsupport.nitishyadav.xyz", // Start keeping the production as well just in case
+  "https://flashbot.nitishyadav.xyz", // Start keeping the production as well just in case
 ];
 
 export async function POST(req: Request) {

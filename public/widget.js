@@ -13,7 +13,7 @@
 
     var baseUrl =
       script.getAttribute("data-base-url") ||
-      "https://flashsupport.nitishyadav.xyz";
+      "https://flashbot.nitishyadav.xyz";
 
     fetch(baseUrl + "/api/widget/session", {
       method: "POST",
