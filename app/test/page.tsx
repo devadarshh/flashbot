@@ -10,7 +10,7 @@ const Page = () => {
             ? "http://localhost:3000"
             : "https://flashbot.nitishyadav.xyz"
         }/widget.js`}
-        data-id="3cd75e97-93ab-4fbc-b267-0dc2fbae15bf"
+        data-id="4f3ed7fe-6df5-4e94-b10e-b67113f7fe5a"
         data-base-url={
           process.env.NODE_ENV === "development"
             ? "http://localhost:3000"
