@@ -22,7 +22,9 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface OrganizationData {
   id: string;
@@ -33,6 +35,8 @@ interface OrganizationData {
 
 const SettingPage = () => {
   const [organizationData, setOrganizationData] = useState<OrganizationData>();
+  const [isDeleting, setIsDeleting] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchOrganizationData = async () => {
@@ -42,6 +46,29 @@ const SettingPage = () => {
     };
     fetchOrganizationData();
   }, []);
+
+  const handleDeleteWorkspace = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsDeleting(true);
+
+    try {
+      const response = await fetch("/api/organization/delete", {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete workspace");
+      }
+
+      toast.success("Workspace deleted successfully");
+      router.push("/");
+      router.refresh();
+    } catch (error) {
+      console.error("Error deleting workspace:", error);
+      toast.error("Failed to delete workspace. Please try again.");
+      setIsDeleting(false);
+    }
+  };
 
   return (
     <div className="p-6 md:p-8 space-y-8 max-w-5xl mx-auto animate-in fade-in duration-500">
@@ -142,8 +169,12 @@ const SettingPage = () => {
                   <AlertDialogCancel className="bg-transparent border-white/10 text-zinc-300 hover:bg-white/5 hover:text-white">
                     Cancel
                   </AlertDialogCancel>
-                  <AlertDialogAction className="bg-red-500 text-white hover:bg-red-600 border-none">
-                    Delete Workspace
+                  <AlertDialogAction
+                    onClick={handleDeleteWorkspace}
+                    disabled={isDeleting}
+                    className="bg-red-500 text-white hover:bg-red-600 border-none disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isDeleting ? "Deleting..." : "Delete Workspace"}
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
