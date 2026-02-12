@@ -16,7 +16,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "No code provided" }, { status: 400 });
 
   try {
-    const redirectUri = process.env.SCALEKIT_REDIRECT_URI!;
+    const host = req.headers.get("host") ?? "localhost:3000";
+    const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+    const redirectUri = `${protocol}://${host}/api/auth/callback`;
     const scalekit = getScalekit();
 
     const authResult = await scalekit.authenticateWithCode(code, redirectUri);
@@ -50,8 +52,6 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    const host = req.headers.get("host") ?? "localhost:3000";
-    const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
     const response = NextResponse.redirect(
       new URL("/", `${protocol}://${host}`),
     );

@@ -1,9 +1,9 @@
 import getScalekit from "@/lib/scalekit";
 import crypto from "crypto";
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     const state = crypto.randomBytes(16).toString("hex");
     (await cookies()).set("sk_state", state, {
@@ -12,7 +12,9 @@ export async function GET() {
       path: "/",
     });
 
-    const redirectUri = process.env.SCALEKIT_REDIRECT_URI!;
+    const host = req.headers.get("host");
+    const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+    const redirectUri = `${protocol}://${host}/api/auth/callback`;
 
     const options = {
       scopes: ["openid", "profile", "email", "offline_access"],
@@ -27,7 +29,7 @@ export async function GET() {
     console.log(error);
     return NextResponse.json(
       { error: "Failed to generate authorization URL" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
