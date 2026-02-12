@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   title: "FlashBot ",
   description:
     "Instantly resolve customer questions with an assistant that reads your docs and speaks with empathy.",
+  icons: {
+    icon: "/flashbot.png",
+  },
 };
 
 export default function RootLayout({
