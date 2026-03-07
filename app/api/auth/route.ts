@@ -12,8 +12,16 @@ export async function GET(req: NextRequest) {
       path: "/",
     });
 
-    const host = req.headers.get("host");
-    const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+    const host =
+      req.headers.get("x-forwarded-host") ??
+      req.headers.get("host") ??
+      "localhost:3000";
+    const forwardedProto = req.headers.get("x-forwarded-proto");
+    const protocol = forwardedProto
+      ? forwardedProto
+      : process.env.NODE_ENV === "production"
+        ? "https"
+        : "http";
     const redirectUri = `${protocol}://${host}/api/auth/callback`;
 
     const options = {

@@ -16,8 +16,16 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "No code provided" }, { status: 400 });
 
   try {
-    const host = req.headers.get("host") ?? "localhost:3000";
-    const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+    const host =
+      req.headers.get("x-forwarded-host") ??
+      req.headers.get("host") ??
+      "localhost:3000";
+    const forwardedProto = req.headers.get("x-forwarded-proto");
+    const protocol = forwardedProto
+      ? forwardedProto
+      : process.env.NODE_ENV === "production"
+        ? "https"
+        : "http";
     const redirectUri = `${protocol}://${host}/api/auth/callback`;
     const scalekit = getScalekit();
 
