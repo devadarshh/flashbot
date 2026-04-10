@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
           const arrayBuffer = await file.arrayBuffer();
           const pdf = await getDocumentProxy(new Uint8Array(arrayBuffer));
           const { text, totalPages } = await extractText(pdf);
-          fileContent = text;
+          fileContent = Array.isArray(text) ? text.join("\n") : text;
           metaData.pageCount = totalPages;
         } else {
           fileContent = await file.text();
