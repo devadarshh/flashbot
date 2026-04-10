@@ -19,7 +19,9 @@ export const getOpenAI = () => {
   if (!_openai) {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      throw new Error("Missing credentials. Please set the `GEMINI_API_KEY` environment variable.");
+      throw new Error(
+        "Missing credentials. Please set the `GEMINI_API_KEY` environment variable.",
+      );
     }
     _openai = new OpenAI({
       apiKey,
@@ -34,7 +36,7 @@ export async function summarizeMarkdown(markdown: string) {
   try {
     const openai = getOpenAI();
     const completion = await openai.chat.completions.create({
-      model: "gemini-2.5-flash",
+      model: "gemini-2.0-flash",
       temperature: 0.1,
       max_tokens: 900,
       messages: [
@@ -50,7 +52,7 @@ MUST be under 2000 words.`,
         },
         {
           role: "user",
-          content: markdown,
+          content: markdown || "No content found in file.",
         },
       ],
     });
@@ -66,7 +68,7 @@ export async function summarizeConversation(messages: any[]) {
   try {
     const openai = getOpenAI();
     const completion = await openai.chat.completions.create({
-      model: "gemini-2.5-flash",
+      model: "gemini-2.0-flash",
       temperature: 0.3,
       max_tokens: 500,
       messages: [
