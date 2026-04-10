@@ -33,57 +33,85 @@ export const getOpenAI = () => {
 };
 
 export async function summarizeMarkdown(markdown: string) {
-  try {
-    const openai = getOpenAI();
-    const completion = await openai.chat.completions.create({
-      model: "gemini-2.0-flash",
-      temperature: 0.1,
-      max_tokens: 900,
-      messages: [
-        {
-          role: "system",
-          content: `
+  let retries = 3;
+  let delay = 2000; // Start with 2 seconds
+
+  while (retries > 0) {
+    try {
+      const openai = getOpenAI();
+      const completion = await openai.chat.completions.create({
+        model: "gemini-2.0-flash",
+        temperature: 0.1,
+        max_tokens: 900,
+        messages: [
+          {
+            role: "system",
+            content: `
 You are a data summarization engine for an AI chatbot.
 Convert the input website markdown/text into a CLEAN, DENSE SUMMARY.
 Output ONLY plain text in ONE continuous paragraph.
 Remove all UI, nav, and marketing fluff.
 Keep ONLY factual content for support.
 MUST be under 2000 words.`,
-        },
-        {
-          role: "user",
-          content: markdown || "No content found in file.",
-        },
-      ],
-    });
+          },
+          {
+            role: "user",
+            content: markdown || "No content found in file.",
+          },
+        ],
+      });
 
-    return completion.choices[0].message.content?.trim() ?? "";
-  } catch (error) {
-    console.error("Error in summarizeMarkdown:", error);
-    throw error;
+      return completion.choices[0].message.content?.trim() ?? "";
+    } catch (error: any) {
+      if (error.status === 429 && retries > 1) {
+        console.warn(
+          `Rate limit hit. Retrying in ${delay}ms... (${retries - 1} retries left)`,
+        );
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        retries--;
+        delay *= 2; // Exponential backoff
+        continue;
+      }
+      console.error("Error in summarizeMarkdown:", error);
+      throw error;
+    }
   }
 }
 
 export async function summarizeConversation(messages: any[]) {
-  try {
-    const openai = getOpenAI();
-    const completion = await openai.chat.completions.create({
-      model: "gemini-2.0-flash",
-      temperature: 0.3,
-      max_tokens: 500,
-      messages: [
-        {
-          role: "system",
-          content:
-            "Summarize the following conversation history into a concise paragraph, preserving key details and user intent. The final output MUST be under 2000 words.",
-        },
-        ...messages,
-      ],
-    });
+  let retries = 3;
+  let delay = 2000;
 
-    return completion.choices[0].message.content?.trim() ?? "";
-  } catch (error) {
-    console.error("Error in summarizeConversation:", error);
-    throw error;
+  while (retries > 0) {
+    try {
+      const openai = getOpenAI();
+      const completion = await openai.chat.completions.create({
+        model: "gemini-2.0-flash",
+        temperature: 0.3,
+        max_tokens: 500,
+        messages: [
+          {
+            role: "system",
+            content:
+              "Summarize the following conversation history into a concise paragraph, preserving key details and user intent. The final output MUST be under 2000 words.",
+          },
+          ...messages,
+        ],
+      });
+
+      return completion.choices[0].message.content?.trim() ?? "";
+    } catch (error: any) {
+      if (error.status === 429 && retries > 1) {
+        console.warn(
+          `Rate limit hit in conversation summary. Retrying in ${delay}ms... (${retries - 1} retries left)`,
+        );
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        retries--;
+        delay *= 2;
+        continue;
+      }
+      console.error("Error in summarizeConversation:", error);
+      throw error;
+    }
   }
 }
