@@ -232,8 +232,8 @@ const AddKnowledgeModal = ({
             >
               <input
                 type="file"
-                id="csv-file-input"
-                accept=".csv,text/csv"
+                id="file-input"
+                accept=".csv,text/csv,.pdf,application/pdf,.txt,text/plain,.md,text/markdown"
                 className="hidden"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
@@ -243,12 +243,14 @@ const AddKnowledgeModal = ({
                       setError("File size must be less than 10MB");
                       return;
                     }
-                    // Validate file type
-                    if (
-                      !file.name.endsWith(".csv") &&
-                      file.type !== "text/csv"
-                    ) {
-                      setError("Only CSV files are allowed");
+
+                    const allowedExtensions = [".csv", ".pdf", ".txt", ".md"];
+                    const fileExtension = file.name
+                      .toLowerCase()
+                      .substring(file.name.lastIndexOf("."));
+
+                    if (!allowedExtensions.includes(fileExtension)) {
+                      setError("Only CSV, PDF, TXT, and MD files are allowed");
                       return;
                     }
                     setUploadedFile(file);
@@ -259,7 +261,7 @@ const AddKnowledgeModal = ({
               <div
                 className="border-2 border-dashed border-white/10 rounded-xl h-60 flex flex-col items-center justify-center text-center p-6 hover:bg-white/2 transition-colors cursor-pointer"
                 onClick={() => {
-                  document.getElementById("csv-file-input")?.click();
+                  document.getElementById("file-input")?.click();
                 }}
               >
                 <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center mb-4">
@@ -270,7 +272,9 @@ const AddKnowledgeModal = ({
                     ? uploadedFile.name
                     : "Click to upload or drag and drop"}
                 </p>
-                <p className="text-xs text-zinc-500 mt-1">CSV (max 10MB)</p>
+                <p className="text-xs text-zinc-500 mt-1">
+                  CSV, PDF, TXT, or MD (max 10MB)
+                </p>
               </div>
             </TabsContent>
           </div>

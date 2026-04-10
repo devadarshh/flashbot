@@ -3,6 +3,7 @@ import { knowledge_source } from "@/db/schema";
 import { isAuthorized } from "@/lib/isAuthorized";
 import { summarizeMarkdown } from "@/lib/openAI";
 import { NextRequest, NextResponse } from "next/server";
+import pdf from "pdf-parse";
 
 export async function POST(req: NextRequest) {
   try {
@@ -25,36 +26,49 @@ export async function POST(req: NextRequest) {
         if (!file) {
           return NextResponse.json(
             { error: "No file provided" },
-            { status: 400 }
+            { status: 400 },
           );
         }
 
-        const fileContent = await file.text();
+        let fileContent = "";
+        const fileExtension = file.name
+          .toLowerCase()
+          .substring(file.name.lastIndexOf("."));
+        let metaData: any = {
+          fileName: file.name,
+          fileSize: file.size,
+        };
 
-        const lines = fileContent.split("\n").filter((line) => line.trim());
-        const headers = lines[0]?.split(",").map((h) => h.trim());
-        let formattedContent: any = "";
+        if (fileExtension === ".pdf") {
+          const buffer = Buffer.from(await file.arrayBuffer());
+          const data = await pdf(buffer);
+          fileContent = data.text;
+          metaData.pageCount = data.numpages;
+        } else {
+          fileContent = await file.text();
+          if (fileExtension === ".csv") {
+            const lines = fileContent.split("\n").filter((line) => line.trim());
+            metaData.rowCount = lines.length - 1;
+            metaData.headers = lines[0]?.split(",").map((h) => h.trim());
+          }
+        }
 
         const markdown = await summarizeMarkdown(fileContent);
-        formattedContent = markdown;
 
         await db.insert(knowledge_source).values({
           user_email: user.email,
           type: "upload",
           name: file.name,
           status: "active",
-          content: formattedContent,
-          meta_data: JSON.stringify({
-            fileName: file.name,
-            fileSize: file.size,
-            rowCount: lines.length - 1,
-            headers: headers,
-          }),
+          content: markdown,
+          meta_data: JSON.stringify(metaData),
         });
 
         return NextResponse.json(
-          { message: "CSV file uploaded successfully" },
-          { status: 200 }
+          {
+            message: `${fileExtension.toUpperCase().replace(".", "")} file uploaded and processed successfully`,
+          },
+          { status: 200 },
         );
       }
     } else {
@@ -82,7 +96,7 @@ export async function POST(req: NextRequest) {
             status: res.status,
             body: html.slice(0, 500),
           },
-          { status: 502 }
+          { status: 502 },
         );
       }
 
@@ -115,13 +129,13 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(
       { message: "Source added successfully" },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("Error in knowledge store:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

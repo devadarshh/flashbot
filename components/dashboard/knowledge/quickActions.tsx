@@ -39,8 +39,7 @@ const QuickActions = ({
             Upload File
           </span>
           <p className="text-xs text-zinc-500 font-normal leading-relaxed whitespace-normal wrap-break-word">
-            Upload CSV files to instantly train your assistant with existing
-            documents.
+            Upload PDF, TXT, MD or CSV files to instantly train your assistant.
           </p>
         </div>
       </Button>
