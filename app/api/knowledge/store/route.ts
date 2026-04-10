@@ -3,7 +3,7 @@ import { knowledge_source } from "@/db/schema";
 import { isAuthorized } from "@/lib/isAuthorized";
 import { summarizeMarkdown } from "@/lib/openAI";
 import { NextRequest, NextResponse } from "next/server";
-import pdf from "pdf-parse";
+import { getDocumentProxy, extractText } from "unpdf";
 
 export async function POST(req: NextRequest) {
   try {
@@ -40,10 +40,11 @@ export async function POST(req: NextRequest) {
         };
 
         if (fileExtension === ".pdf") {
-          const buffer = Buffer.from(await file.arrayBuffer());
-          const data = await pdf(buffer);
-          fileContent = data.text;
-          metaData.pageCount = data.numpages;
+          const arrayBuffer = await file.arrayBuffer();
+          const pdf = await getDocumentProxy(new Uint8Array(arrayBuffer));
+          const { text, totalPages } = await extractText(pdf);
+          fileContent = text;
+          metaData.pageCount = totalPages;
         } else {
           fileContent = await file.text();
           if (fileExtension === ".csv") {
