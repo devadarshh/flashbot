@@ -62,39 +62,21 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            # Login to GHCR on EC2
+            # Navigate to project directory
+            cd ~/flashbot
+
+            # Login to GHCR
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-            # Pull the latest image
-            docker pull ghcr.io/${{ github.repository }}:latest
+            # Pull latest images
+            docker compose pull
 
-            # Aggressively clean up any containers using port 3000
-            docker ps -a --filter "expose=3000" -q | xargs -r docker rm -f
-            
-            # Stop and remove containers by name as fallback
-            docker stop web || true
-            docker rm -f web || true
-            
-            # Final cleanup: kill any remaining processes on port 3000
-            sudo fuser -k 3000/tcp || true
-            
-            # Wait a moment for port to be released
-            sleep 2
+            # Start/Restart all services defined in docker-compose.yml
+            docker compose up -d
 
-            # Run new container
-            # Note: We use the same run command as in docker-compose, but simplified for single container
-            # If using docker-compose on server, use: docker compose pull && docker compose up -d
-            docker run -d \
-              --name web \
-              --restart always \
-              -p 3000:3000 \
-              -e DATABASE_URL='${{ secrets.DATABASE_URL }}' \
-              -e GEMINI_API_KEY='${{ secrets.GEMINI_API_KEY }}' \
-              -e SCALEKIT_ENVIRONMENT_URL='${{ secrets.SCALEKIT_ENVIRONMENT_URL }}' \
-              -e SCALEKIT_CLIENT_ID='${{ secrets.SCALEKIT_CLIENT_ID }}' \
-              -e SCALEKIT_CLIENT_SECRET='${{ secrets.SCALEKIT_CLIENT_SECRET }}' \
-              -e SCALEKIT_REDIRECT_URI='${{ secrets.SCALEKIT_REDIRECT_URI }}' \
-              -e JWT_SECRET='${{ secrets.JWT_SECRET }}' \
-              -e NEXT_PUBLIC_WEBSITE_URI='${{ secrets.NEXT_PUBLIC_WEBSITE_URI }}' \
-              -e ZENROWS_API_KEY='${{ secrets.ZENROWS_API_KEY }}' \
-              ghcr.io/${{ github.repository }}:latest
+            # Run database migrations/push inside the web container
+            # This ensures the schema is always up to date
+            docker exec web npx drizzle-kit push --config=drizzle.config.ts
+
+            # Optional: Clean up old unused images
+            docker image prune -f
