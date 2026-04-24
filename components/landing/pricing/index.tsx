@@ -15,7 +15,7 @@ const Pricing = () => {
         <div className="p-8 rounded-3xl border border-white/5 bg-zinc-900/20 flex flex-col items-start text-left hover:bg-zinc-900/40 transition-colors">
           <div className="text-sm font-medium text-zinc-400 mb-2">Starter</div>
           <div className="text-4xl font-medium text-white tracking-tight mb-6">
-            $0 <span className="text-lg text-zinc-600 font-light">/mo</span>
+            ₹0 <span className="text-lg text-zinc-600 font-light">/mo</span>
           </div>
           <ul className="space-y-3 mb-8 text-sm text-zinc-300 font-light w-full">
             <li className="flex items-center gap-3">
@@ -39,7 +39,7 @@ const Pricing = () => {
           </div>
           <div className="text-sm font-medium text-indigo-400 mb-2">Pro</div>
           <div className="text-4xl font-medium text-white tracking-tight mb-6">
-            $49 <span className="text-lg text-zinc-600 font-light">/mo</span>
+            ₹2,999 <span className="text-lg text-zinc-600 font-light">/mo</span>
           </div>
           <ul className="space-y-3 mb-8 text-sm text-zinc-300 font-light w-full">
             <li className="flex items-center gap-3">
