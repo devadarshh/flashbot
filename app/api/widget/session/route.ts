@@ -7,6 +7,7 @@ import { SignJWT } from "jose";
 const ALLOWED_ORIGINS = [
   "http://localhost:3000",
   "http://localhost:3001",
+  "https://flashbot.adarshsingh.xyz",
   "https://flashbot.nitishyadav.xyz", // Start keeping the production as well just in case
 ];
 
