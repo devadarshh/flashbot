@@ -1,3 +1,4 @@
+import { getAuthRedirectUri } from "@/lib/authRedirectUri";
 import getScalekit from "@/lib/scalekit";
 import crypto from "crypto";
 import { cookies } from "next/headers";
@@ -12,17 +13,7 @@ export async function GET(req: NextRequest) {
       path: "/",
     });
 
-    const host =
-      req.headers.get("x-forwarded-host") ??
-      req.headers.get("host") ??
-      "localhost:3000";
-    const forwardedProto = req.headers.get("x-forwarded-proto");
-    const protocol = forwardedProto
-      ? forwardedProto
-      : process.env.NODE_ENV === "production"
-        ? "https"
-        : "http";
-    const redirectUri = `${protocol}://${host}/api/auth/callback`;
+    const redirectUri = getAuthRedirectUri(req);
 
     const options = {
       scopes: ["openid", "profile", "email", "offline_access"],

@@ -1,4 +1,5 @@
 import { db } from "@/db/client";
+import { getAuthRedirectUri } from "@/lib/authRedirectUri";
 import getScalekit from "@/lib/scalekit";
 import { NextRequest, NextResponse } from "next/server";
 import { user as User } from "@/db/schema";
@@ -16,6 +17,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "No code provided" }, { status: 400 });
 
   try {
+    const redirectUri = getAuthRedirectUri(req);
     const host =
       req.headers.get("x-forwarded-host") ??
       req.headers.get("host") ??
@@ -26,7 +28,6 @@ export async function GET(req: NextRequest) {
       : process.env.NODE_ENV === "production"
         ? "https"
         : "http";
-    const redirectUri = `${protocol}://${host}/api/auth/callback`;
     const scalekit = getScalekit();
 
     const authResult = await scalekit.authenticateWithCode(code, redirectUri);
