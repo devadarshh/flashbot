@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 
-export const XAI_MODEL = process.env.XAI_MODEL ?? "grok-4.3";
+export const XAI_MODEL = process.env.XAI_MODEL ?? "grok-build-0.1";
 
 let _openai: OpenAI | null = null;
 

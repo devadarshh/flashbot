@@ -20,7 +20,7 @@ COPY . .
 
 # Accept build args for optional environment variables
 ARG XAI_API_KEY=dummy_key_for_build
-ARG XAI_MODEL=grok-4.3
+ARG XAI_MODEL=grok-build-0.1
 ARG DATABASE_URL=dummy_db_url_for_build
 ARG SCALEKIT_ENVIRONMENT_URL=https://dummy.scalekit.com
 ARG SCALEKIT_CLIENT_ID=dummy_client_id
