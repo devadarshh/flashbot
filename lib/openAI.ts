@@ -1,35 +1,21 @@
 import OpenAI from "openai";
-import https from "https";
 
-const agent = new https.Agent({
-  rejectUnauthorized: false, // For development - set to true in production
-});
-
-const customFetch = (url: RequestInfo | URL, init?: RequestInit) => {
-  return fetch(url, {
-    ...init,
-    // @ts-ignore - Node.js specific
-    agent: url.toString().startsWith("https") ? agent : undefined,
-  });
-};
-
-export const GEMINI_MODEL =
-  process.env.GEMINI_MODEL ?? "gemini-1.5-flash";
+export const GROQ_MODEL =
+  process.env.GROQ_MODEL ?? "llama-3.1-8b-instant";
 
 let _openai: OpenAI | null = null;
 
 export const getOpenAI = () => {
   if (!_openai) {
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
       throw new Error(
-        "Missing credentials. Please set the `GEMINI_API_KEY` environment variable.",
+        "Missing credentials. Please set the `GROQ_API_KEY` environment variable.",
       );
     }
     _openai = new OpenAI({
       apiKey,
-      fetch: customFetch,
-      baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
+      baseURL: "https://api.groq.com/openai/v1",
     });
   }
   return _openai;
@@ -37,13 +23,13 @@ export const getOpenAI = () => {
 
 export async function summarizeMarkdown(markdown: string) {
   let retries = 3;
-  let delay = 2000; // Start with 2 seconds
+  let delay = 2000;
 
   while (retries > 0) {
     try {
       const openai = getOpenAI();
       const completion = await openai.chat.completions.create({
-        model: GEMINI_MODEL,
+        model: GROQ_MODEL,
         temperature: 0.1,
         max_tokens: 900,
         messages: [
@@ -72,7 +58,7 @@ MUST be under 2000 words.`,
         );
         await new Promise((resolve) => setTimeout(resolve, delay));
         retries--;
-        delay *= 2; // Exponential backoff
+        delay *= 2;
         continue;
       }
       console.error("Error in summarizeMarkdown:", error);
@@ -89,7 +75,7 @@ export async function summarizeConversation(messages: any[]) {
     try {
       const openai = getOpenAI();
       const completion = await openai.chat.completions.create({
-        model: GEMINI_MODEL,
+        model: GROQ_MODEL,
         temperature: 0.3,
         max_tokens: 500,
         messages: [
