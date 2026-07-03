@@ -13,6 +13,9 @@ const customFetch = (url: RequestInfo | URL, init?: RequestInit) => {
   });
 };
 
+export const GEMINI_MODEL =
+  process.env.GEMINI_MODEL ?? "gemini-1.5-flash";
+
 let _openai: OpenAI | null = null;
 
 export const getOpenAI = () => {
@@ -40,7 +43,7 @@ export async function summarizeMarkdown(markdown: string) {
     try {
       const openai = getOpenAI();
       const completion = await openai.chat.completions.create({
-        model: "gemini-2.0-flash",
+        model: GEMINI_MODEL,
         temperature: 0.1,
         max_tokens: 900,
         messages: [
@@ -86,7 +89,7 @@ export async function summarizeConversation(messages: any[]) {
     try {
       const openai = getOpenAI();
       const completion = await openai.chat.completions.create({
-        model: "gemini-2.0-flash",
+        model: GEMINI_MODEL,
         temperature: 0.3,
         max_tokens: 500,
         messages: [
