@@ -2,7 +2,7 @@ import { db } from "@/db/client";
 import { knowledge_source } from "@/db/schema";
 import { countConversationTokens } from "@/lib/countConversationTokens";
 import { isAuthorized } from "@/lib/isAuthorized";
-import { getOpenAI, summarizeConversation, XAI_MODEL } from "@/lib/openAI";
+import { getOpenAI, summarizeConversation, MISTRAL_MODEL } from "@/lib/openAI";
 import { inArray } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
@@ -64,7 +64,7 @@ ${context}`;
   try {
     const openai = getOpenAI();
     const completion = await openai.chat.completions.create({
-      model: XAI_MODEL,
+      model: MISTRAL_MODEL,
       messages: [{ role: "system", content: systemPrompt }, ...messages],
       temperature: 0.7,
       max_tokens: 200,

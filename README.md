@@ -88,7 +88,8 @@
     SCALEKIT_WEBHOOK_SECRET="your-webhook-secret"
 
     # AI & Tools
-    GEMINI_API_KEY="your-gemini-api-key"
+    MISTRAL_API_KEY="your-mistral-api-key"
+    MISTRAL_MODEL="open-mistral-nemo"
     ZENROWS_API_KEY="your-zenrows-api-key"
 
     # Security

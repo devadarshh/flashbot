@@ -1,20 +1,21 @@
 import OpenAI from "openai";
 
-export const XAI_MODEL = process.env.XAI_MODEL ?? "grok-build-0.1";
+export const MISTRAL_MODEL =
+  process.env.MISTRAL_MODEL ?? "open-mistral-nemo";
 
 let _openai: OpenAI | null = null;
 
 export const getOpenAI = () => {
   if (!_openai) {
-    const apiKey = process.env.XAI_API_KEY;
+    const apiKey = process.env.MISTRAL_API_KEY;
     if (!apiKey) {
       throw new Error(
-        "Missing credentials. Please set the `XAI_API_KEY` environment variable.",
+        "Missing credentials. Please set the `MISTRAL_API_KEY` environment variable.",
       );
     }
     _openai = new OpenAI({
       apiKey,
-      baseURL: "https://api.x.ai/v1",
+      baseURL: "https://api.mistral.ai/v1",
     });
   }
   return _openai;
@@ -28,7 +29,7 @@ export async function summarizeMarkdown(markdown: string) {
     try {
       const openai = getOpenAI();
       const completion = await openai.chat.completions.create({
-        model: XAI_MODEL,
+        model: MISTRAL_MODEL,
         temperature: 0.1,
         max_tokens: 900,
         messages: [
@@ -74,7 +75,7 @@ export async function summarizeConversation(messages: any[]) {
     try {
       const openai = getOpenAI();
       const completion = await openai.chat.completions.create({
-        model: XAI_MODEL,
+        model: MISTRAL_MODEL,
         temperature: 0.3,
         max_tokens: 500,
         messages: [
