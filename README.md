@@ -89,7 +89,7 @@
 
     # AI & Tools
     MISTRAL_API_KEY="your-mistral-api-key"
-    MISTRAL_MODEL="open-mistral-nemo"
+    MISTRAL_MODEL="mistral-small-latest"
     ZENROWS_API_KEY="your-zenrows-api-key"
 
     # Security

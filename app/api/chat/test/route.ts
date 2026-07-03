@@ -2,7 +2,7 @@ import { db } from "@/db/client";
 import { knowledge_source } from "@/db/schema";
 import { countConversationTokens } from "@/lib/countConversationTokens";
 import { isAuthorized } from "@/lib/isAuthorized";
-import { getOpenAI, summarizeConversation, MISTRAL_MODEL } from "@/lib/openAI";
+import { getOpenAI, sanitizeChatMessages, summarizeConversation, MISTRAL_MODEL } from "@/lib/openAI";
 import { inArray } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
@@ -65,7 +65,10 @@ ${context}`;
     const openai = getOpenAI();
     const completion = await openai.chat.completions.create({
       model: MISTRAL_MODEL,
-      messages: [{ role: "system", content: systemPrompt }, ...messages],
+      messages: [
+        { role: "system", content: systemPrompt },
+        ...sanitizeChatMessages(messages),
+      ],
       temperature: 0.7,
       max_tokens: 200,
     });
@@ -76,7 +79,7 @@ ${context}`;
 
     return NextResponse.json({ response: reply });
   } catch (error) {
-    console.error("OpenAI Error:", error);
+    console.error("Mistral AI Error:", error);
     return NextResponse.json(
       { response: "An error occurred while processing your request." },
       { status: 500 },

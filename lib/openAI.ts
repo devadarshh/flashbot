@@ -1,7 +1,20 @@
 import OpenAI from "openai";
 
 export const MISTRAL_MODEL =
-  process.env.MISTRAL_MODEL ?? "open-mistral-nemo";
+  process.env.MISTRAL_MODEL ?? "mistral-small-latest";
+
+type ChatMessage = { role: string; content: string };
+
+export function sanitizeChatMessages(
+  messages: ChatMessage[],
+): OpenAI.Chat.Completions.ChatCompletionMessageParam[] {
+  return messages
+    .filter((m) => m.role && m.content?.trim())
+    .map((m) => ({
+      role: m.role as "system" | "user" | "assistant",
+      content: String(m.content),
+    }));
+}
 
 let _openai: OpenAI | null = null;
 
@@ -84,7 +97,7 @@ export async function summarizeConversation(messages: any[]) {
             content:
               "Summarize the following conversation history into a concise paragraph, preserving key details and user intent. The final output MUST be under 2000 words.",
           },
-          ...messages,
+          ...sanitizeChatMessages(messages),
         ],
       });
 

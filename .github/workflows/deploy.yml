@@ -45,7 +45,7 @@ jobs:
           build-args: |
             DATABASE_URL=${{ secrets.DATABASE_URL || 'postgresql://dummy:dummy@localhost:5432/dummy' }}
             MISTRAL_API_KEY=${{ secrets.MISTRAL_API_KEY || 'dummy_key_for_build' }}
-            MISTRAL_MODEL=${{ secrets.MISTRAL_MODEL || 'open-mistral-nemo' }}
+            MISTRAL_MODEL=${{ secrets.MISTRAL_MODEL || 'mistral-small-latest' }}
             SCALEKIT_ENVIRONMENT_URL=${{ secrets.SCALEKIT_ENVIRONMENT_URL || 'https://dummy.scalekit.com' }}
             SCALEKIT_CLIENT_ID=${{ secrets.SCALEKIT_CLIENT_ID || 'dummy_client_id' }}
             SCALEKIT_CLIENT_SECRET=${{ secrets.SCALEKIT_CLIENT_SECRET || 'dummy_client_secret' }}
