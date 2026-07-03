@@ -1,21 +1,20 @@
 import OpenAI from "openai";
 
-export const GROQ_MODEL =
-  process.env.GROQ_MODEL ?? "llama-3.1-8b-instant";
+export const XAI_MODEL = process.env.XAI_MODEL ?? "grok-4.3";
 
 let _openai: OpenAI | null = null;
 
 export const getOpenAI = () => {
   if (!_openai) {
-    const apiKey = process.env.GROQ_API_KEY;
+    const apiKey = process.env.XAI_API_KEY;
     if (!apiKey) {
       throw new Error(
-        "Missing credentials. Please set the `GROQ_API_KEY` environment variable.",
+        "Missing credentials. Please set the `XAI_API_KEY` environment variable.",
       );
     }
     _openai = new OpenAI({
       apiKey,
-      baseURL: "https://api.groq.com/openai/v1",
+      baseURL: "https://api.x.ai/v1",
     });
   }
   return _openai;
@@ -29,7 +28,7 @@ export async function summarizeMarkdown(markdown: string) {
     try {
       const openai = getOpenAI();
       const completion = await openai.chat.completions.create({
-        model: GROQ_MODEL,
+        model: XAI_MODEL,
         temperature: 0.1,
         max_tokens: 900,
         messages: [
@@ -75,7 +74,7 @@ export async function summarizeConversation(messages: any[]) {
     try {
       const openai = getOpenAI();
       const completion = await openai.chat.completions.create({
-        model: GROQ_MODEL,
+        model: XAI_MODEL,
         temperature: 0.3,
         max_tokens: 500,
         messages: [

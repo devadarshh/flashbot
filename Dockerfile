@@ -19,16 +19,16 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Accept build args for optional environment variables
-ARG GROQ_API_KEY=dummy_key_for_build
-ARG GROQ_MODEL=llama-3.1-8b-instant
+ARG XAI_API_KEY=dummy_key_for_build
+ARG XAI_MODEL=grok-4.3
 ARG DATABASE_URL=dummy_db_url_for_build
 ARG SCALEKIT_ENVIRONMENT_URL=https://dummy.scalekit.com
 ARG SCALEKIT_CLIENT_ID=dummy_client_id
 ARG SCALEKIT_CLIENT_SECRET=dummy_client_secret
 ARG NEXT_PUBLIC_WEBSITE_URI=http://localhost:3000
 
-ENV GROQ_API_KEY=${GROQ_API_KEY}
-ENV GROQ_MODEL=${GROQ_MODEL}
+ENV XAI_API_KEY=${XAI_API_KEY}
+ENV XAI_MODEL=${XAI_MODEL}
 ENV DATABASE_URL=${DATABASE_URL}
 ENV SCALEKIT_ENVIRONMENT_URL=${SCALEKIT_ENVIRONMENT_URL}
 ENV SCALEKIT_CLIENT_ID=${SCALEKIT_CLIENT_ID}

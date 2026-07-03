@@ -44,8 +44,8 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             DATABASE_URL=${{ secrets.DATABASE_URL || 'postgresql://dummy:dummy@localhost:5432/dummy' }}
-            GROQ_API_KEY=${{ secrets.GROQ_API_KEY || 'dummy_key_for_build' }}
-            GROQ_MODEL=${{ secrets.GROQ_MODEL || 'llama-3.1-8b-instant' }}
+            XAI_API_KEY=${{ secrets.XAI_API_KEY || 'dummy_key_for_build' }}
+            XAI_MODEL=${{ secrets.XAI_MODEL || 'grok-4.3' }}
             SCALEKIT_ENVIRONMENT_URL=${{ secrets.SCALEKIT_ENVIRONMENT_URL || 'https://dummy.scalekit.com' }}
             SCALEKIT_CLIENT_ID=${{ secrets.SCALEKIT_CLIENT_ID || 'dummy_client_id' }}
             SCALEKIT_CLIENT_SECRET=${{ secrets.SCALEKIT_CLIENT_SECRET || 'dummy_client_secret' }}
